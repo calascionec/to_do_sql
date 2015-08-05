@@ -12,6 +12,7 @@
 
   //initialize the application
   $app = new Silex\Application();
+  $app['debug'] =  true;
   $app->register(new Silex\Provider\TwigServiceProvider(), array('twig.path' => __DIR__.'/../views'));
 
 
@@ -19,21 +20,32 @@
 
   $app->get("/", function() use ($app) {
 
-      return $app['twig']->render('tasks.html.twig', array('tasks' => Task::getTasks()));
+      return $app['twig']->render('tasks.html.twig', array('tasks' => Task::getTasks(), 'count' => 0));
   });
 
   $app->post("/tasks", function() use ($app) {
-    $task = new Task($_POST['description']);
+    $task = new Task($_POST['description'], $_POST['dueDate']);
     $task->save();
     return $app['twig']->render('task_created.html.twig', array('newtask' => $task));
 
+  });
+
+  $app->post('/delete_one', function() use ($app) {
+
+       $tasks = Task::getTasks();
+       unset($tasks[$_POST['count']]);
+       $tasks = array_values($tasks);
+
+     //return $app['twig']->render('delete_one.html.twig');
+
+    return $app['twig']->render('tasks.html.twig', array('tasks' => Task::getTasks(), 'count' => 0));
   });
 
   $app->post('/delete_tasks', function() use ($app) {
 
     Task::deleteTasks();
 
-    return $app['twig']->render('tasks_deleted.html.twig'); 
+    return $app['twig']->render('tasks_deleted.html.twig');
 
   });
 

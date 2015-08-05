@@ -3,10 +3,20 @@
   class Task {
 
     private $description;
+    private $dueDate;
 
-    function __construct($description) {
+    function __construct($description, $dueDate) {
 
         $this->description = $description;
+        $this->dueDate = $dueDate;
+    }
+
+    function setDueDate ($dueDate) {
+        $this->dueDate = $dueDate;
+    }
+
+    function getDueDate () {
+        return $this->dueDate;
     }
 
     function setDescription ($description) {

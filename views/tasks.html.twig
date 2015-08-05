@@ -9,7 +9,14 @@
         <p>Here are all your tasks:</p>
         <ul>
             {% for task in tasks %}
-                <li>{{ task.getDescription }}</li>
+                <li>
+                    <form action='/delete_one' method='POST'>
+                    <input id='count' name='count' value='{{ count }}'></input>{{ count }} - {{ task.getDescription }} is due on: {{ task.getDueDate }}
+
+                        <button type='submit'>Delete Task</button>
+                    </form>
+                </li>
+                    {% set count = count + 1 %}
             {% endfor %}
         </ul>
     {% endif %}
@@ -17,11 +24,13 @@
     <form action='/tasks' method='POST'>
         <label for='description'>Description of task:</label>
         <input id='description' name='description' type='text'></input>
+        <label for='dueDate'>Due Date:</label>
+        <input id='dueDate' name='dueDate' type='date'></input>
+        <button type='submit'>Submit</button></br>
     </form>
-    <button type='submit'>Submit</button></br>
 
     <form action='/delete_tasks' method='POST'>
-      <button type='submit'>Delete</button>
+      <button type='submit'>Delete All Tasks</button>
     </form>
 
 </body>
