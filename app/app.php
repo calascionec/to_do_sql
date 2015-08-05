@@ -25,13 +25,33 @@
 
       $output = "";
 
-      foreach (Task::getAll() as $task) {
+      //display all the available tasks
+      foreach (Task::getTasks() as $task) {
         $output = $output . $task->getDescription() . "</br>";
       }
 
-      
+      //create new task form
+      $output = "<h1>List of tasks</h1>" . $output . "</br>
+          <form action='/tasks' method='POST'>
+              <label for='description'>Description of task:</label>
+              <input id='description' name='description' type='text'></input>
+          </form>
+          <button type='submit'>Submit</button>
+
+      ";
 
       return $output;
+  });
+
+  $app->post("/tasks", function(){
+    $task = new Task($_POST['description']);
+    $task->save();
+    return "
+    <h1>You created a task!</h1>
+    <h3>Task created: " . $task->getDescription() . "</h3>
+    <p><a href='/'>Look at list</a></p>
+    ";
+
   });
 
   return $app;
