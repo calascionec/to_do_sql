@@ -29,6 +29,11 @@
         return $_SESSION['list_of_tasks'];
     }
 
+    static function deleteTasks() {
+
+        $_SESSION['list_of_tasks'] = array();
+     }
+
   }
 
 ?>
