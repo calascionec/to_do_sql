@@ -13,8 +13,14 @@
   //initialize the application
   $app = new Silex\Application();
   $app['debug'] =  true;
-  $app->register(new Silex\Provider\TwigServiceProvider(), array('twig.path' => __DIR__.'/../views'));
+  $app->register(new Silex\Provider\TwigServiceProvider(), array(
+      'twig.path' => __DIR__.'/../views'));
 
+  //Database
+  $server = 'mysql:host=localhost; db=to_do'; //connect to the localhost and DB 'to_do'
+  $username = 'root';
+  $password = 'root';
+  $DB = new PDO($server, $username, $password);
 
   //routes
 
