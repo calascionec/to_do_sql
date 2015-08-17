@@ -10,22 +10,15 @@
         <ul>
             {% for task in tasks %}
                 <li>
-                    <form action='/delete_one' method='POST'>
-                    <input id='count' name='count' value='{{ count }}'></input>{{ count }} - {{ task.getDescription }} is due on: {{ task.getDueDate }}
-
-                        <button type='submit'>Delete Task</button>
-                    </form>
+                    {{ task.getDescription }}
                 </li>
-                    {% set count = count + 1 %}
             {% endfor %}
         </ul>
     {% endif %}
 
-    <form action='/tasks' method='POST'>
+    <form action='/tasks' method='post'>
         <label for='description'>Description of task:</label>
         <input id='description' name='description' type='text'></input>
-        <label for='dueDate'>Due Date:</label>
-        <input id='dueDate' name='dueDate' type='date'></input>
         <button type='submit'>Submit</button></br>
     </form>
 
