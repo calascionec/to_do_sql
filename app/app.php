@@ -3,11 +3,6 @@
   require_once __DIR__."/../vendor/autoload.php";
   require_once __DIR__."/../src/Task.php";
 
-  //create and check cookie
-  session_start();
-  if (empty($_SESSION['list_of_tasks'])) {
-      $_SESSION['list_of_tasks'] = array();
-  }
 
 
   //initialize the application

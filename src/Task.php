@@ -1,22 +1,16 @@
 <?php
 
+
+
   class Task {
 
     private $description;
-    private $dueDate;
+    private $id;
 
-    function __construct($description, $dueDate) {
+    function __construct($description, $id = null) {
 
         $this->description = $description;
-        $this->dueDate = $dueDate;
-    }
-
-    function setDueDate ($dueDate) {
-        $this->dueDate = $dueDate;
-    }
-
-    function getDueDate () {
-        return $this->dueDate;
+        $this->id = $id;
     }
 
     function setDescription ($description) {
@@ -29,19 +23,45 @@
         return $this->description;
     }
 
-    function save() {
-
-        array_push($_SESSION['list_of_tasks'], $this);
+    function getId() {
+        return $this->id;
     }
 
-    static function getTasks() {
-
-        return $_SESSION['list_of_tasks'];
+    function save()
+    {
+        $GLOBALS['DB']->exec("INSERT INTO tasks (description) VALUES ('{$this->getDescription()}');");
+        $this->id = $GLOBALS['DB']->lastInsertId();
     }
 
-    static function deleteTasks() {
+    static function getAll()
+    {
+        $returned_tasks = $GLOBALS['DB']->query("SELECT * FROM tasks;");
+        $tasks = array();
+        foreach($returned_tasks as $task) {
+            $description = $task['description'];
+            $id = $task['id'];
+            $new_task = new Task($description, $id);
+            array_push($tasks, $new_task);
+        }
+        return $tasks;
+    }
 
-        $_SESSION['list_of_tasks'] = array();
+    static function deleteAll() {
+
+        $GLOBALS['DB']->exec("DELETE FROM tasks;");
+     }
+
+     static function find($search_id)
+     {
+         $found_task = null;
+         $tasks = Task::getAll();
+         foreach($tasks as $task) {
+             $task_id = $task->getId();
+             if ($task_id == $search_id) {
+                 $found_task = $task;
+             }
+         }
+         return $found_task;
      }
 
   }
